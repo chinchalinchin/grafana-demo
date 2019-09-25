@@ -2,18 +2,15 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <base href = "/">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script>
             $(document).ready(function(){
                 console.log("On Ready")
                 $.ajax({
-                    url: 'http://localhost:8000/getSnapshot',
+                    url: 'http://localhost:8000/redirect/getPanel',
                     type: 'GET',
                     dataType: 'json',
                     success:function(data){
-                        console.log("Ajax Script Success: Response Received");
-                        console.log("Ajax Script: Creating Iframe...")
                         var iframe = document.createElement("iframe");
                         document.body.appendChild(iframe);
                         iframe.contentWindow.document.open();
