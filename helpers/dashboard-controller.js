@@ -4,9 +4,10 @@ const key = "eyJrIjoiZkU1ekF3ckRtVHhKN0xNbWRGQnJJa3FuS005cUd2U3YiLCJuIjoidGVzdF9
 module.exports = function(app) {
 
   var options = {
+    // WORKS, after a fashion
     url:'http://localhost:8088/d/TwYnCJtWz/test-dashboard?orgId=1&from=1537803470946&to=1569339470946',
     headers:{
-      'Accept': 'text/html',
+      'Accept': 'application/json,text/html',
       'Content-Type': 'application/json,text/html',
       'Authorization': `Bearer ${key}`
     }
