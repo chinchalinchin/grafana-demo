@@ -3,12 +3,35 @@
     <head>
         <meta charset="utf-8">
     </head>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script>
-        // TODO: Script to calculate time frame for dashboard
+
+        $(document).ready(function(){
+            const now = new Date()
+            panel_width = 500
+            panel_height = 500
+            constructUrl(1, now.getTime(), now.getTime() - calculateTimeDelta(), 2, panel_width, panel_height)
+        })
+
+        function calculateTimeDelta(){
+            const now = new Date();
+            let secsPerYear = 31536000;
+            return now - secsPerYear
+        }
+
+        function constructUrl(orgId, from, to, panelId, width, height){
+            let base = `http://localhost:8088/render/d-solo/TwYnCJtWz/test-dashboard`
+            query = `?orgId=${orgId}&from=${from}&to=${to}&panelId=${panelId}&width=${width}&height=${height}`
+            grafanaPanelUrl = base.concat(query)
+            console.log(grafanaPanelUrl)
+            $("#grafana-comp").attr('src', grafanaPanelUrl)
+        }
+
     </script>
 
     <body>
-        <img src="http://localhost:8088/render/d-solo/TwYnCJtWz/test-dashboard?orgId=1&from=1537870339632&to=1569406339632&panelId=2&width=1000&height=500&tz=America%2FNew_York"></iframe>
+        <img id = "grafana-comp" src=""></iframe>
     </body>
 
 </html>
