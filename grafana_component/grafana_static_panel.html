@@ -13,20 +13,21 @@
             panel_width = 500;
             panel_height = 500;
             src_url = constructUrl(1, now.getTime(), now.getTime() - calculateTimeDelta(), 2, panel_width, panel_height);
-
             $("#grafana-comp").attr('src', src_url);
         })
 
         function calculateTimeDelta(){
             const now = new Date();
             let secsPerYear = 31536000;
-            return now - secsPerYear
+            return secsPerYear
         }
 
         function constructUrl(orgId, from, to, panelId, width, height){
             const apiKey =  "eyJrIjoiZkU1ekF3ckRtVHhKN0xNbWRGQnJJa3FuS005cUd2U3YiLCJuIjoidGVzdF9rZXkiLCJpZCI6MX0="
             let base = `http://localhost:8088/render/d-solo/TwYnCJtWz/test-dashboard`
-            query = `?orgId=${orgId}&from=${from}&to=${to}&panelId=${panelId}&width=${width}&height=${height}`
+            
+            // query = `?orgId=${orgId}&from=${from}&to=${to}&panelId=${panelId}&width=${width}&height=${height}`
+            query = `?orgId=${orgId}&panelId=${panelId}&width=${width}&height=${height}`
             grafanaPanelUrl = base.concat(query)
             return grafanaPanelUrl
         }

@@ -17,7 +17,7 @@
         function calculateTimeDelta(){
             const now = new Date();
             let secsPerYear = 31536000;
-            return now - secsPerYear
+            return now.getTime() - secsPerYear
         }
 
         function constructUrl(orgId, from, to, panelId, width, height){
@@ -29,11 +29,12 @@
                 type: 'GET',
                 url: grafanaPanelUrl,
                 headers: {
-                    "Authorization": `Bearer ${apiKey}`
+                    Authorization: `Bearer ${apiKey}`
                 },
                 success: function(data){
                     console.log(data)
-                    $("#grafana-comp").attr('src', data)
+                    $("#grafana-img").attr('src', data)
+                    $("#grafana-iframe").attr('src', data)
                 },
                 error: function(err){
                     console.log(err)
@@ -44,7 +45,8 @@
     </script>
 
     <body>
-        <img id = "#grafana-comp" src="http://localhost:8000/getPanel">
+        <img id = "grafana-img" src="">
+        <iframe id = "grafana-iframe" src = ""></iframe>
     </body>
 
 </html>

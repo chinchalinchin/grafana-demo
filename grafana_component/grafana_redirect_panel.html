@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+    </head>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script>
+        $(window).load(function(){
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:8000/grafana/getPanel',
+                success: function(data){
+                    let ifr = $("#grafana-iframe-1").get(0).contentDocument ||  $("#grafana-iframe").get(0).contentWindow.document;
+                    ifr.body.innerHTML = data.body
+                    $("#grafana-iframe-2").attr('src', `data:text/htmlcharset=utf-8,${encodeURI(data.body)}`)
+                }
+            })
+        })
+    </script>
+
+    <body>
+        <iframe id = "grafana-iframe-1" src = ""></iframe>
+        <iframe id = "grafana-iframe-2" src = ""></iframe>
+    </body>
+
+</html>
