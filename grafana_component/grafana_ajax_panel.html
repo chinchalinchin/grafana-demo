@@ -8,13 +8,10 @@
     <script>
 
         $(document).ready(function(){
-            console.log('ready');
-            const now = new Date();
-            panel_width = 500;
-            panel_height = 500;
-            src_url = constructUrl(1, now.getTime(), now.getTime() - calculateTimeDelta(), 2, panel_width, panel_height);
-
-            $("#grafana-comp").attr('src', src_url);
+            const now = new Date()
+            panel_width = 500
+            panel_height = 500
+            constructUrl(1, now.getTime(), now.getTime() - calculateTimeDelta(), 2, panel_width, panel_height)
         })
 
         function calculateTimeDelta(){
@@ -28,14 +25,26 @@
             let base = `http://localhost:8088/render/d-solo/TwYnCJtWz/test-dashboard`
             query = `?orgId=${orgId}&from=${from}&to=${to}&panelId=${panelId}&width=${width}&height=${height}`
             grafanaPanelUrl = base.concat(query)
-            return grafanaPanelUrl
+            $.ajax({
+                type: 'GET',
+                url: grafanaPanelUrl,
+                headers: {
+                    "Authorization": `Bearer ${apiKey}`
+                },
+                success: function(data){
+                    console.log(data)
+                    $("#grafana-comp").attr('src', data)
+                },
+                error: function(err){
+                    console.log(err)
+                }
+            })
         }
 
     </script>
 
     <body>
-        <!-- Need to be logged into Grafana for this to work-->
-        <img id ="grafana-comp" src="hi">
+        <img id = "#grafana-comp" src="http://localhost:8000/getPanel">
     </body>
 
 </html>
