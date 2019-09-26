@@ -8,8 +8,9 @@ const helper = require('./helper.js')
 
 // EXPRESS SETUP
 const app = express()
-app.use(bodyParser.urlencoded({extended : true}))
+app.use(bodyParser.urlencoded({extended : false}))
 app.use(bodyParser.json())
+// ENABLE CORS
 app.use(cors())
 
 // ROUTING
@@ -24,12 +25,11 @@ app.get('/scripts/helper/', function(req, res, next){
 app.get('/grafana/getPanel', function(req, res, next){
   helper.log("Requesting Authenticated Panel From Grafana...", "/grafana/getPanel/")
   const now = new Date().getTime()
-  options = {
+  urlAndHeaders = {
     url: helper.constructUrl(1, now, now - helper.calculateTimeDelta(), 2, 500, 500),
     header: helper.grafanaHeaders()
   }
-
-  request(options, function(grafReq, grafRes, grafNext){
+  request(urlAndHeaders, function(grafReq, grafRes, grafNext){
     helper.log("Response Received From Grafana...", "/grafana/getPanel/")
     res.send(grafRes)
   })
@@ -39,23 +39,29 @@ app.get('/grafana/getPanel', function(req, res, next){
 app.get('/grafana/getAnonPanel', function(req, res, next){
   helper.log("Requesting Anonynmous Panel From Grafana...", "/grafana/getAnonPanel/")
   const now = new Date().getTime()
-  options = {
+  urlAndHeaders = {
     url: helper.constructUrl(1, now, now - helper.calculateTimeDelta(), 2, 500, 500),
     headers:{
-      //Accept: 'img/png'
+       Accept: 'img/png'
     }
   }
-  request(options, function(grafReq, grafRes, grafNext){
+  request(urlAndHeaders, function(grafReq, grafRes, grafNext){
     helper.log("Response Received From Grafana...", "/grafana/getAnonPanel/")
-    res.send(grafRes)
+    res.setHeader('Content-Type', 'img/png')
+    res.send(grafRes.body)
   })
 })
 
   // HTML PAGES
-app.get('/example/panel', function(req, res, next){
-    helper.log("Serving grafana_static_panel.html", '/example/static-panel/')
-    res.sendFile(path.join(__dirname, 'grafana_component', 'grafana_panel.html'))
+app.get('/example/anon-panels', function(req, res, next){
+    helper.log("Serving grafana_anon_panel.html", '/example/anon-panels/')
+    res.sendFile(path.join(__dirname, 'grafana_component', 'grafana_anon_panel.html'))
 });
+
+app.get('/example/auth-panels', function(req, res, next){
+  helper.log("Serving grafana_auth_panel.html", "/example/auth-panels/")
+  res.sendFile(path.join(__dirname, 'grafana_component', 'grafana_auth_panel.html'))
+})
 
 // SERVER 
   // LISTEN
