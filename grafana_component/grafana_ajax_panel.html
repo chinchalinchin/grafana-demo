@@ -9,22 +9,11 @@
 
         $(document).ready(function(){
             const now = new Date()
-            panel_width = 500
-            panel_height = 500
-            constructUrl(1, now.getTime(), now.getTime() - calculateTimeDelta(), 2, panel_width, panel_height)
-        })
-
-        function calculateTimeDelta(){
-            const now = new Date();
-            let secsPerYear = 31536000;
-            return now.getTime() - secsPerYear
-        }
-
-        function constructUrl(orgId, from, to, panelId, width, height){
+            const panel_width = 500
+            const panel_height = 500
+            const grafanaPanelUrl = constructUrl(1, now.getTime(), now.getTime() - calculateTimeDelta(), 
+                                    2, panel_width, panel_height)
             const apiKey =  "eyJrIjoiZkU1ekF3ckRtVHhKN0xNbWRGQnJJa3FuS005cUd2U3YiLCJuIjoidGVzdF9rZXkiLCJpZCI6MX0="
-            let base = `http://localhost:8088/render/d-solo/TwYnCJtWz/test-dashboard`
-            query = `?orgId=${orgId}&from=${from}&to=${to}&panelId=${panelId}&width=${width}&height=${height}`
-            grafanaPanelUrl = base.concat(query)
             $.ajax({
                 type: 'GET',
                 url: grafanaPanelUrl,
@@ -40,11 +29,34 @@
                     console.log(err)
                 }
             })
-        }
+        })
+
+        function constructUrl(orgId, from, to, panelId, width, height){
+            const grafanaHost = 'http://localhost:8088'
+            const renderDashboard = `${grafanaHost}/render/d-solo/TwYnCJtWz/test-dashboard`
+            // query = `?orgId=${orgId}&from=${from}&to=${to}&panelId=${panelId}&width=${width}&height=${height}`
+            query = `?orgId=${orgId}&panelId=${panelId}&width=${width}&height=${height}`
+            return renderDashboard.concat(query)
+        };
+
+        function calculateTimeDelta(){
+            const now = new Date();
+            const secsPerYear = 31536000;
+            return (now.getTime() - secsPerYear)
+        };
 
     </script>
 
     <body>
+        <h1>Ajax Src</h1>
+        <p>
+            Ajax HTTP calls directly to http://localhost:8088/render/d-solo-/*******/test-dashboard<br>
+            on load. Authorization headers are set before call.<br><br>
+            <u>First frame:</u> <i>img</i> with src set to response<br>
+            <b>Result:</b> CORS Error<br><br>
+            <u>Second frame:</u> <i>iframe</i> with src set to response<br>
+            <b>Result:</b> CORS Error <br><br>
+        </p>
         <img id = "grafana-img" src="">
         <iframe id = "grafana-iframe" src = ""></iframe>
     </body>

@@ -5,10 +5,9 @@
     </head>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script>
 
+    <script>
         $(document).ready(function(){
-            console.log('ready');
             const now = new Date();
             panel_width = 500;
             panel_height = 500;
@@ -16,26 +15,28 @@
             $("#grafana-comp").attr('src', src_url);
         })
 
-        function calculateTimeDelta(){
-            const now = new Date();
-            let secsPerYear = 31536000;
-            return secsPerYear
-        }
-
         function constructUrl(orgId, from, to, panelId, width, height){
+            const grafanaHost = 'http://localhost:8088'
             const apiKey =  "eyJrIjoiZkU1ekF3ckRtVHhKN0xNbWRGQnJJa3FuS005cUd2U3YiLCJuIjoidGVzdF9rZXkiLCJpZCI6MX0="
-            let base = `http://localhost:8088/render/d-solo/TwYnCJtWz/test-dashboard`
-            
+            const renderDashboard = `${grafanaHost}/render/d-solo/TwYnCJtWz/test-dashboard`
             // query = `?orgId=${orgId}&from=${from}&to=${to}&panelId=${panelId}&width=${width}&height=${height}`
             query = `?orgId=${orgId}&panelId=${panelId}&width=${width}&height=${height}`
-            grafanaPanelUrl = base.concat(query)
-            return grafanaPanelUrl
-        }
+            return renderDashboard.concat(query)
+        };
 
+        function calculateTimeDelta(){
+            const now = new Date();
+            const secsPerYear = 31536000;
+            return (now.getTime() - secsPerYear)
+        };
     </script>
 
     <body>
-        <!-- Need to be logged into Grafana for this to work-->
+        <h1>Img Src</h1>
+        <p>
+            Set img src equal to direct link to http://localhost:8088/render/d-solo/******/test-dashboard<br>
+            <b>Result:</b> WORKS!<br>
+        </p>
         <img id ="grafana-comp" src="hi">
     </body>
 
