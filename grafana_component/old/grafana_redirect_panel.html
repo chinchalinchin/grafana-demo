@@ -21,7 +21,9 @@
                     console.log("Appending Grafana Response To Content Window...")
                     ifr.body.innerHTML = data.body
                     console.log("Setting Src Attribute of Iframe 2 ")
-                    $("#grafana-iframe-2").attr('src', `data:text/html;base64,${btoa(data.body)}`)
+                    //$("#grafana-iframe-2").attr('src', `data:text/html;base64,${btoa(data.body)}`)
+
+                    $("#grafana-img-2").attr('src', data.body)
                     console.log("Appending Response Html To Paragraph Tag...")
                     $("#grafana-response").append(`${data.body}`)
                 }
@@ -43,6 +45,7 @@
             </p>
             <iframe id = "grafana-iframe-1" src = ""></iframe>
             <iframe id = "grafana-iframe-2" src = ""></iframe>
+            <img id = "grafana-img-2" src = "">
         </div>
 
         <div>
@@ -67,7 +70,6 @@
                 <b>Result:</b> Grafana loading graphic with 'Not Valid URI' for grafana script<br><br>
             </p><br><br>
             <p id = "grafana-response"></p><br><br>
-            <p id = "grafana-raw-response"></p>
         </div>
     </body>
 
