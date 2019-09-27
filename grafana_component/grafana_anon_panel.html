@@ -4,46 +4,15 @@
         <meta charset="utf-8">
     </head>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-
-    <script>
-        // INITIALIZE GRAFANA-IMG-1 ELEMENT
-        $(document).ready(function(){
-            const now = new Date();
-            panel_width = 500;
-            panel_height = 500;
-            src_url = constructUrl(1, now.getTime(), now.getTime() - calculateTimeDelta(), 2, panel_width, panel_height);
-            $("#grafana-img-1").attr('src', src_url);
-        })
-
-        function constructUrl(orgId, from, to, panelId, width, height){
-            const grafanaHost = 'http://localhost:8088'
-            const apiKey =  "eyJrIjoiZkU1ekF3ckRtVHhKN0xNbWRGQnJJa3FuS005cUd2U3YiLCJuIjoidGVzdF9rZXkiLCJpZCI6MX0="
-            const renderDashboard = `${grafanaHost}/render/d-solo/TwYnCJtWz/test-dashboard`
-            // query = `?orgId=${orgId}&from=${from}&to=${to}&panelId=${panelId}&width=${width}&height=${height}`
-            query = `?orgId=${orgId}&panelId=${panelId}&width=${width}&height=${height}`
-            return renderDashboard.concat(query)
-        };
-
-        function calculateTimeDelta(){
-            const now = new Date();
-            const secsPerYear = 31536000;
-            return (now.getTime() - secsPerYear)
-        };
-    </script>
-
     <body>
         <h1>Anoynmous Panels</h1>
         <p> <u>Note:</u> Grafana needs <i>anoynmous access</i> turned <b>on</b> for this page.<br><br>
-            <u>Frame 1:</u> <i>img</i> src = http://localhost:8088/render/d-solo/*******/test-dashboard<br>
+            <u>Frame 1:</u> <i>img</i> src = http://localhost:8000/redirect/grafana/getAnonPanel<br>
             <b>Result: </b> Works!<br><br>
-            <u>Frame 2:</u> <i>img</i> src = http://localhost:8000/redirect/grafana/getAnonPanel<br>
-            <b>Result: </b> Works!<br><br>
-            <u>Frame 3:</u> <i>iframe</i> src = http://localhost:8000/proxy/grafana/getAnonPanel/dashboard-solo/db/test-dashboard?orgId=1&panelId=2&width=500&height=500<br>
+            <u>Frame 2:</u> <i>iframe</i> src = http://localhost:8000/proxy/grafana/getAnonPanel/dashboard-solo/db/test-dashboard?orgId=1&panelId=2&width=500&height=500<br>
             <b>Result: </b> Works!<br><br>
         </p>
-        <img id="grafana-img-1" src = "">
-        <img id="grafana-img-2" src = "http://localhost:8000/redirect/grafana/getAnonPanel">
+        <img id="grafana-img" src = "http://localhost:8000/redirect/grafana/getAnonPanel">
         <iframe id = "grafana-iframe" src = "http://localhost:8000/proxy/grafana/getAnonPanel/dashboard-solo/db/test-dashboard?orgId=1&panelId=2&width=500&height=500"></iframe>
     </body>
 
