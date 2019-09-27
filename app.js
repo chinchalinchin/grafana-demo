@@ -9,34 +9,16 @@ const proxy = require('express-http-proxy');
 // EXPRESS SETUP
 const app = express()
 app.use(bodyParser.urlencoded({extended : false}))
-app.use(bodyParser.json())
-
 // ENABLE CORS
 app.use(cors())
 
 // ROUTING
-  // SCRIPTS
-app.get('/scripts/helper/', function(req, res, next){
-  helper.log("Serving Helper Script...", "/scripts/helper/")
-  res.setHeader('Content-Type', 'text/javascript;charset=utf-8,')
-  res.sendFile(path.join(__dirname, 'helper.js'))
-})
-
   // GRAFANA ANONYNMOUS REDIRECT
 app.get('/redirect/grafana/getAnonPanel', function(req, res, next){
   helper.log("Redirecting to Grafana", "/redirect/grafana/getAnonPanel/")
   const now = new Date().getTime()
   const anonLink = helper.constructAnonUrl(1, now, now - helper.calculateTimeDelta(), 2, 500, 500)
   res.redirect(anonLink)
-})
-
-  // GRAFANA AUTHENTICATED REDIRECT
-app.get('/redirect/grafana/getAuthPanel', function(req, res, next){
-  helper.log("Redirecting to Grafana", "/redirect/grafana/getAuthPanel/")
-  const now = new Date().getTime()
-  const authLink = helper.constructAuthUrl(1, now, now - helper.calculateTimeDelta(), 2, 500, 500)
-  res.setHeader("Authorization", `Bearer ${helper.grafanaApiKey()}`)
-  res.redirect(authLink)
 })
 
   // GRAFANA ANONYMOUS PROXY
