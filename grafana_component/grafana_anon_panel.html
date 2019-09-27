@@ -36,13 +36,22 @@
         <h1>Anoynmous Panels</h1>
         <p> <u>Note:</u> Grafana needs <i>anoynmous access</i> turned <b>on</b> for this page.<br><br>
             Set img src equal to Grafana responses through various techniques<br>
-            <u>Frame 1:</u> src = http://localhost:8088/render/d-solo/*******/test-dashboard<br>
+            <u>Frame 1:</u> <i>img</i> src = http://localhost:8088/render/d-solo/*******/test-dashboard<br>
             <b>Result:</b> WORKS!<br><br>
-            <u>Frame 4:</u> src = http://localhost:8000/redirect/grafana/getAnonPanel<br>
-            <b>Result: Works!</b><br><br>
+            <u>Frame 2:</u> <i>img</i> src = http://localhost:8000/redirect/grafana/getAnonPanel<br>
+            <b>Result: </b>Works!<br><br>
+            <u>Frame 3:</u> <i>img</i> src = http://localhost:8000/proxy/grafana/getAnonPanel<br>
+            <b>Result: </b><br><br>
+            <u>Frame 4:</u> <i>iframe</i> src = http://localhost:8000/redirect/grafana/getAnonPanel<br>
+            <b>Result: </b>Works!<br><br>
+            <u>Frame 5:</u> <i>iframe</i> src = http://localhost:8000/proxy/grafana/getAnonPanel<br>
+            <b>Result: </b>Works!<br><br>
         </p>
-        <img id="grafana-img-1" src="">
+        <img id="grafana-img-1" src = "">
         <img id="grafana-img-2" src = "http://localhost:8000/redirect/grafana/getAnonPanel">
+        <img id="grafana-img-3" src = "http://localhost:8000/proxy/grafana/getAnonPanel">
+        <iframe id="grafana-iframe-1" src = "http://localhost:8000/redirect/grafana/getAnonPanel"></iframe>
+        <iframe id = "grafana-iframe-2" src = "http://localhost:8000/proxy/grafana/getAnonPanel"></iframe>
     </body>
 
 </html>

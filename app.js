@@ -4,12 +4,14 @@ const request = require('request')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const helper = require('./helper.js')
+const proxy = require('express-http-proxy');
 
 
 // EXPRESS SETUP
 const app = express()
 app.use(bodyParser.urlencoded({extended : false}))
 app.use(bodyParser.json())
+
 // ENABLE CORS
 app.use(cors())
 
@@ -25,53 +27,34 @@ app.get('/scripts/helper/', function(req, res, next){
 app.get('/redirect/grafana/getAnonPanel', function(req, res, next){
   helper.log("Redirecting to Grafana", "/redirect/grafana/getAnonPanel")
   const now = new Date().getTime()
-  url =  helper.constructAnonUrl(1, now, now - helper.calculateTimeDelta(), 2, 500, 500)
-  res.redirect(url)
+  const anonLink = helper.constructAnonUrl(1, now, now - helper.calculateTimeDelta(), 2, 500, 500)
+  res.redirect(anonLink)
 })
 
   // GRAFANA AUTHENTICATED REDIRECT
 app.get('/redirect/grafana/getAuthPanel', function(req, res, next){
   helper.log("Redirecting to Grafana", "/redirect/grafana/getAnonPanel")
+  const now = new Date().getTime()
+  const authLink = helper.constructAuthUrl(1, now, now - helper.calculateTimeDelta(), 2, 500, 500)
   res.setHeader("Authorization", `Bearer ${helper.grafanaApiKey()}`)
-  const now = new Date().getTime()
-  url =  helper.constructAuthUrl(1, now, now - helper.calculateTimeDelta(), 2, 500, 500)
-  res.redirect(url)
+  res.redirect(authLink)
 })
 
 
 
-  // GRAFANA AUTHENTICATED REQUEST
-app.get('/grafana/getAuthPanel', function(req, res, next){
-  helper.log("Requesting Authenticated Panel From Grafana...", "/grafana/getAuthPanel/")
-  const now = new Date().getTime()
-  urlAndHeaders = {
-    url: helper.constructAuthUrl(1, now, now - helper.calculateTimeDelta(), 2, 500, 500),
-    header: helper.grafanaHeaders()
+  // GRAFANA AUTHENTICATED PROXY
+app.use('/proxy/grafana/getAuthPanel', 
+    proxy(helper.constructAuthUrl(1, new Date().getTime(), new Date().getTime() - helper.calculateTimeDelta(), 2, 500, 500), {
+      proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
+      proxyReqOpts.headers['Authorizatoin'] = `Bearer ${helper.grafanaApiKey()}`;
+      proxyReqOpts.method = 'GET';
+      return proxyReqOpts;
   }
-  helper.log(`Grafana Auth Url: ${urlAndHeaders.url}`, "/grafana/getAuthPanel/")
-  request(urlAndHeaders, function(grafReq, grafRes){
-    helper.log("Response Received From Grafana...", "/grafana/getAuthPanel/")
-    console.log(grafRes.headers)
-    res.send(grafRes)
-  })
-})
+}))
 
-  // GRAFANA ANONYMOUS REQUEST
-app.get('/grafana/getAnonPanel', function(req, res, next){
-  helper.log("Requesting Anonynmous Panel From Grafana...", "/grafana/getAnonPanel/")
-  const now = new Date().getTime()
-  urlAndHeaders = {
-    url: helper.constructAnonUrl(1, now, now - helper.calculateTimeDelta(), 2, 500, 500),
-    headers:{
-       Accept: 'img/png'
-    }
-  }
-  helper.log(`Grafana Anon Url: ${urlAndHeaders.url}`, "/grafana/getAnonPanel")
-  request(urlAndHeaders, function(grafReq, grafRes){
-    helper.log("Response Received From Grafana...", "/grafana/getAnonPanel/")
-    res.send(grafRes)
-  })
-})
+  // GRAFANA ANONYMOUS PROXY
+app.get('/proxy/grafana/getAnonPanel', 
+    proxy(helper.constructAnonUrl(1, new Date().getTime(), new Date().getTime() - helper.calculateTimeDelta(), 2, 500, 500)))
 
   // HTML PAGES
 app.get('/example/anon-panels', function(req, res, next){

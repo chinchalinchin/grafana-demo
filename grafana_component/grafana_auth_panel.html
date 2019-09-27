@@ -8,34 +8,25 @@
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script>
+        /*
         $(window).load(function(){
-            console.log("First Ajax Call to localhost:8000/grafana/getAuthPanel...")
+            console.log("Document: Window Loaded")
+            console.log("Ajax: Request To 'http://localhost:8000/grafana/getAuthPanel'...")
             $.ajax({
                 type: 'GET',
                 url: 'http://localhost:8000/grafana/getAuthPanel',
                 success: function(data){
-                    console.log("Grafana Request Through localhost:8000 Success...")
-
-                    console.log("Ajax: Retrieving Iframe 1Content Window...")
-                    let ifr = $("#grafana-iframe-1").get(0).contentDocument ||  $("#grafana-iframe").get(0).contentWindow.document;
-                   
-                    console.log("Ajax: Appending Grafana Response To Content Window...")
-                    ifr.body.innerHTML = data.body
-
-                    console.log("Ajax: Setting Src Attribute of Iframe 2 ")
-                    $("#grafana-iframe-2").attr('src', `data:text/html;base64,${btoa(data.body)}`)
-
-                    console.log("Ajax: Setting Src Attribute of Img 2")
-                    $("#grafana-img-2").attr('src', data.body)
-
-                    console.log("Ajax: Appending Response Html To Paragraph Tag...")
-                    $("#grafana-response").append(`${data.body}`)
+                    console.log(`Ajax: Request To 'http://localhost:8000/grafana/getAuthPanel' Success...`)
+                    console.log("Ajax: Setting Src Attribute Of grafana-iframe-1...")
+                    // console.log(JSON.parse(data).body)
+                    $("#grafana-iframe-3").attr('src', `data:text/html;charset=utf-8,${JSON.parse(data).body}`)
                 },
                 error: function(err){
-                    console.log("Ajax: Grafana Request Through localhost:8000 Failed...")
+                    console.log("Ajax: Grafana Request Through localhost:8000/grafana/getAuthPanel Failed...")
                 }
             })
         })
+        */
     </script>
 
     <body>
@@ -44,21 +35,15 @@
                 
         <div>
              
-                <u>First frame:</u> Set content window to response body<br>
-                <b>Result:</b> Grafana loading graphic with 'Not Valid URI' for grafana script<br><br>
-                <u>Second frame:</u> Set src to encoded response body<br>
-                <b>Result:</b> Grafana error graphic with 'Not Valid URI' for grafana script<br><br>
-                <u>Third frame:</u> Set <i>iframe</i> src to http://localhost:8000/grafana/getAuthPanel<br>
-                <b>Result:</b> Raw Grafana response rendered<br><br>
-                <u>Fourth frame:</u> Set <i>iframe</i> src to http://localhost:8000/grafana/redirect/getAuthPanel<br>
+                <u>First frame:</u> Set <i>iframe</i> src = http://localhost:8000/proxy/grafana/getAuthPanel<br>
+                <b>Result:</b> <br><br>
+                <u>Second frame:</u> Set <i>iframe</i> src = http://localhost:8000/grafana/redirect/getAuthPanel<br>
                 <b>Result:</b> Shows Grafana Login<br><br>
               
             </p>
-            <iframe id = "grafana-iframe-1" src = ""></iframe>
-            <iframe id = "grafana-iframe-2" src = ""></iframe>
-            <iframe id = "grafana-iframe-3" src = "http://localhost:8000/grafana/getAuthPanel"></iframe>
-            <iframe id="grafana-iframe-4" src = "http://localhost:8000/redirect/grafana/getAuthPanel"></iframe>
-        
+            <iframe id = "grafana-iframe-1" src = "http://localhost:8000/proxy/grafana/getAuthPanel"></iframe>
+            <iframe id = "grafana-iframe-2" src = "http://localhost:8000/redirect/grafana/getAuthPanel"></iframe>
+            
         </div>
 
     </body>
