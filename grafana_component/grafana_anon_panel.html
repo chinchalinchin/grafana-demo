@@ -7,7 +7,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 
     <script>
-        // INITIALIZE GRAFANA-IMG-1
+        // INITIALIZE GRAFANA-IMG-1 ELEMENT
         $(document).ready(function(){
             const now = new Date();
             panel_width = 500;
@@ -15,18 +15,6 @@
             src_url = constructUrl(1, now.getTime(), now.getTime() - calculateTimeDelta(), 2, panel_width, panel_height);
             $("#grafana-img-1").attr('src', src_url);
         })
-
-        // INITIALIZE GRAFANA-IMG-2
-        $(window).load(function(){
-            $.ajax({
-                type: 'GET',
-                url: 'http://localhost:8000/grafana/getAnonPanel',
-                success: function(data){
-                    $("#grafana-img-3").attr('src', `data:img/png;charset=iso-8859-1,${data}}`)
-                }
-            })
-        })
-
 
         function constructUrl(orgId, from, to, panelId, width, height){
             const grafanaHost = 'http://localhost:8088'
@@ -50,17 +38,11 @@
             Set img src equal to Grafana responses through various techniques<br>
             <u>Frame 1:</u> src = http://localhost:8088/render/d-solo/*******/test-dashboard<br>
             <b>Result:</b> WORKS!<br><br>
-            <u>Frame 2:</u> src = http://localhost:8000/grafana/getAnonPanel<br>
-            <b>Result: </b> Broken Image<br><br>
-            <u>Frame 3:</u> src = Ajax Response from http://localhost:8000/grafana/getAnonPanel<br>
-            <b>Result:</b> Broken Image <br><br>
             <u>Frame 4:</u> src = http://localhost:8000/redirect/grafana/getAnonPanel<br>
-            <b>Result:</b><br><br>
+            <b>Result: Works!</b><br><br>
         </p>
         <img id="grafana-img-1" src="">
-        <img id="grafana-img-2" src= "http://localhost:8000/grafana/getAnonPanel">
-        <img id="grafana-img-3" src= "">
-        <img id="grafana-img-4" src = "http://localhost:8000/redirect/grafana/getAnonPanel">
+        <img id="grafana-img-2" src = "http://localhost:8000/redirect/grafana/getAnonPanel">
     </body>
 
 </html>
