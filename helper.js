@@ -1,21 +1,25 @@
 module.exports = {
     log: log, 
-    constructUrl: constructUrl,
+    constructAnonUrl: constructAnonUrl,
+    constructAuthUrl: constructAuthUrl,
     calculateTimeDelta: calculateTimeDelta,
     grafanaOptions: getGrafanaOptions,
-    grafanaHost: getGrafanaHost,
+    grafanaAuthHost: getGrafanaAuthHost,
+    grafanaAnonHost: getGrafanaAnonHost,
     grafanaHeaders: getGrafanaHeaders,
     grafanaApiKey: getGrafanaApiKey
 }
 
 // GRAFANA INFO
-let grafanaHost = 'http://localhost:8088'
+let grafanaAnonHost = 'http://localhost:8088'
+let grafanaAuthHost = 'http://localhost:8080'
 let grafanaApiKey =  "eyJrIjoiZkU1ekF3ckRtVHhKN0xNbWRGQnJJa3FuS005cUd2U3YiLCJuIjoidGVzdF9rZXkiLCJpZCI6MX0="
 let grafanaOptions = {
-    getSnapshotUrl:`${grafanaHost}/api/snapshots`,
-    postSnapshotUrl:`${grafanaHost}/api/snapshots/`,
-    getAllSnapshotsUrl: `${grafanaHost}/api/dashboard/snapshots`,
-    renderDashboard: `${grafanaHost}/render/d-solo/TwYnCJtWz/test-dashboard`,
+    getAnonSnapshotUrl:`${grafanaAnonHost}/api/snapshots`,
+    postAnonSnapshotUrl:`${grafanaAnonHost}/api/snapshots/`,
+    getAllAnonSnapshotsUrl: `${grafanaAnonHost}/api/dashboard/snapshots`,
+    renderAnonDashboard: `${grafanaAnonHost}/render/d-solo/TwYnCJtWz/test-dashboard`,
+    renderAuthDashboard: `${grafanaAuthHost}/render/d-solo/TwYnCJtWz/test-dashboard`
   }
 let grafanaHeaders = {
     Accept: 'application/json',
@@ -24,15 +28,25 @@ let grafanaHeaders = {
 
 function getGrafanaOptions(){ return grafanaOptions }
 
-function getGrafanaHost(){ return grafanaHost }
+function getGrafanaAuthHost(){ return grafanaAuthHost }
+
+function getGrafanaAnonHost() { return grafanAnonHost }
 
 function getGrafanaHeaders(){ return grafanaHeaders }
 
 function getGrafanaApiKey(){ return grafanaApiKey }
 
 // http://localhost:8088/render/d-solo/TwYnCJtWz/test-dashboard
-function constructUrl(orgId, from, to, panelId, width, height){
-  const renderDashboard = grafanaOptions.renderDashboard
+function constructAnonUrl(orgId, from, to, panelId, width, height){
+  const renderDashboard = grafanaOptions.renderAnonDashboard
+  // const query = `?orgId=${orgId}&from=${from}&to=${to}&panelId=${panelId}&width=${width}&height=${height}`
+  const query = `?orgId=${orgId}&panelId=${panelId}&width=${width}&height=${height}`
+  return renderDashboard.concat(query)
+};
+
+// http://localhost:8080/render/d-solo/TwYnCJtWz/test-dashboard
+function constructAuthUrl(orgId, from, to, panelId, width, height){
+  const renderDashboard = grafanaOptions.renderAuthDashboard
   // const query = `?orgId=${orgId}&from=${from}&to=${to}&panelId=${panelId}&width=${width}&height=${height}`
   const query = `?orgId=${orgId}&panelId=${panelId}&width=${width}&height=${height}`
   return renderDashboard.concat(query)

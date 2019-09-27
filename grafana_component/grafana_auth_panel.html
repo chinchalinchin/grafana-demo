@@ -9,72 +9,58 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script>
         $(window).load(function(){
+            console.log("First Ajax Call to localhost:8000/grafana/getAuthPanel...")
             $.ajax({
                 type: 'GET',
-                url: 'http://localhost:8000/grafana/getPanel',
+                url: 'http://localhost:8000/grafana/getAuthPanel',
                 success: function(data){
-                    console.log("Grafana Redirect Success...")
-                    console.log(data.body)
+                    console.log("Grafana Request Through localhost:8000 Success...")
 
-                    console.log("Retrieving Iframe 1Content Window...")
+                    console.log("Ajax: Retrieving Iframe 1Content Window...")
                     let ifr = $("#grafana-iframe-1").get(0).contentDocument ||  $("#grafana-iframe").get(0).contentWindow.document;
                    
-                    console.log("Appending Grafana Response To Content Window...")
+                    console.log("Ajax: Appending Grafana Response To Content Window...")
                     ifr.body.innerHTML = data.body
 
-                    console.log("Setting Src Attribute of Iframe 2 ")
+                    console.log("Ajax: Setting Src Attribute of Iframe 2 ")
                     $("#grafana-iframe-2").attr('src', `data:text/html;base64,${btoa(data.body)}`)
 
+                    console.log("Ajax: Setting Src Attribute of Img 2")
                     $("#grafana-img-2").attr('src', data.body)
 
-                    console.log("Appending Response Html To Paragraph Tag...")
+                    console.log("Ajax: Appending Response Html To Paragraph Tag...")
                     $("#grafana-response").append(`${data.body}`)
+                },
+                error: function(err){
+                    console.log("Ajax: Grafana Request Through localhost:8000 Failed...")
                 }
             })
         })
     </script>
 
     <body>
-        <div>
             <h1>Authenticated Panels</h1>
             <p> <u>Note:</u> Grafana needs <i>anonynmous access</i> turned <b>off</b> for this page.<br><br>
-              <h1>Ajax Redirect Src</h1>
-                Ajax HTTP Calls to http://localhost:8000/grafana/getPanel on load.<br>
-                /grafana/getPanel forwards to localhost:8088 with Authorization headers<br>
-                and returns response.<br><br>
+                
+        <div>
+             
                 <u>First frame:</u> Set content window to response body<br>
                 <b>Result:</b> Grafana loading graphic with 'Not Valid URI' for grafana script<br><br>
                 <u>Second frame:</u> Set src to encoded response body<br>
                 <b>Result:</b> Grafana error graphic with 'Not Valid URI' for grafana script<br><br>
+                <u>Third frame:</u> Set <i>iframe</i> src to http://localhost:8000/grafana/getAuthPanel<br>
+                <b>Result:</b> Raw Grafana response rendered<br><br>
+                <u>Fourth frame:</u> Set <i>iframe</i> src to http://localhost:8000/grafana/redirect/getAuthPanel<br>
+                <b>Result:</b> Shows Grafana Login<br><br>
+              
             </p>
             <iframe id = "grafana-iframe-1" src = ""></iframe>
             <iframe id = "grafana-iframe-2" src = ""></iframe>
-            <img id = "grafana-img-2" src = "">
+            <iframe id = "grafana-iframe-3" src = "http://localhost:8000/grafana/getAuthPanel"></iframe>
+            <iframe id="grafana-iframe-4" src = "http://localhost:8000/redirect/grafana/getAuthPanel"></iframe>
+        
         </div>
 
-        <div>
-            <h1>Direct Redirect Src</h1>
-            <p>
-                Set src equal to http://localhost:8000/grafana/getPanel which forwards to<br>
-                localhost:8088 with Authorization headers and returns response.<br><br>
-                <u>First frame:</u> Set <i>iframe</i> src to url<br>
-                <b>Result:</b> Raw Grafana response rendered<br><br>
-                <u>Second frame:</u> Set <i>img</i> src to url<br>
-                <b>Result:</b> Broken img <br><br>
-            </p>
-            <iframe id = "grafana-iframe-3" src = "http://localhost:8000/grafana/getPanel"></iframe>
-            <img id ="grafana-img-1" src = "http://localhost:8000/grafana/getPanel">
-        </div>
-
-        <div>
-            <h1>Raw Grafana Redirect Response Body</h1>
-            <p>
-                Append response body to paragraph <i>p</i> tag so HTML from response<br>
-                gets inserted directly into DOM<br><br>
-                <b>Result:</b> Grafana loading graphic with 'Not Valid URI' for grafana script<br><br>
-            </p><br><br>
-            <p id = "grafana-response"></p><br><br>
-        </div>
     </body>
 
 </html>

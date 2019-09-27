@@ -21,34 +21,55 @@ app.get('/scripts/helper/', function(req, res, next){
   res.sendFile(path.join(__dirname, 'helper.js'))
 })
 
+  // GRAFANA ANONYNMOUS REDIRECT
+app.get('/redirect/grafana/getAnonPanel', function(req, res, next){
+  helper.log("Redirecting to Grafana", "/redirect/grafana/getAnonPanel")
+  const now = new Date().getTime()
+  url =  helper.constructAnonUrl(1, now, now - helper.calculateTimeDelta(), 2, 500, 500)
+  res.redirect(url)
+})
+
   // GRAFANA AUTHENTICATED REDIRECT
-app.get('/grafana/getPanel', function(req, res, next){
-  helper.log("Requesting Authenticated Panel From Grafana...", "/grafana/getPanel/")
+app.get('/redirect/grafana/getAuthPanel', function(req, res, next){
+  helper.log("Redirecting to Grafana", "/redirect/grafana/getAnonPanel")
+  res.setHeader("Authorization", `Bearer ${helper.grafanaApiKey()}`)
+  const now = new Date().getTime()
+  url =  helper.constructAuthUrl(1, now, now - helper.calculateTimeDelta(), 2, 500, 500)
+  res.redirect(url)
+})
+
+
+
+  // GRAFANA AUTHENTICATED REQUEST
+app.get('/grafana/getAuthPanel', function(req, res, next){
+  helper.log("Requesting Authenticated Panel From Grafana...", "/grafana/getAuthPanel/")
   const now = new Date().getTime()
   urlAndHeaders = {
-    url: helper.constructUrl(1, now, now - helper.calculateTimeDelta(), 2, 500, 500),
+    url: helper.constructAuthUrl(1, now, now - helper.calculateTimeDelta(), 2, 500, 500),
     header: helper.grafanaHeaders()
   }
-  request(urlAndHeaders, function(grafReq, grafRes, grafNext){
-    helper.log("Response Received From Grafana...", "/grafana/getPanel/")
+  helper.log(`Grafana Auth Url: ${urlAndHeaders.url}`, "/grafana/getAuthPanel/")
+  request(urlAndHeaders, function(grafReq, grafRes){
+    helper.log("Response Received From Grafana...", "/grafana/getAuthPanel/")
+    console.log(grafRes.headers)
     res.send(grafRes)
   })
 })
 
-  // GRAFANA ANONYMOUS REDIRECT
+  // GRAFANA ANONYMOUS REQUEST
 app.get('/grafana/getAnonPanel', function(req, res, next){
   helper.log("Requesting Anonynmous Panel From Grafana...", "/grafana/getAnonPanel/")
   const now = new Date().getTime()
   urlAndHeaders = {
-    url: helper.constructUrl(1, now, now - helper.calculateTimeDelta(), 2, 500, 500),
+    url: helper.constructAnonUrl(1, now, now - helper.calculateTimeDelta(), 2, 500, 500),
     headers:{
        Accept: 'img/png'
     }
   }
-  request(urlAndHeaders, function(grafReq, grafRes, grafNext){
+  helper.log(`Grafana Anon Url: ${urlAndHeaders.url}`, "/grafana/getAnonPanel")
+  request(urlAndHeaders, function(grafReq, grafRes){
     helper.log("Response Received From Grafana...", "/grafana/getAnonPanel/")
-    res.setHeader('Content-Type', 'img/png')
-    res.send(grafRes.body)
+    res.send(grafRes)
   })
 })
 
