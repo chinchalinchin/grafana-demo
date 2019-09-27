@@ -39,17 +39,12 @@
             <b>Result: </b> Works!<br><br>
             <u>Frame 2:</u> <i>img</i> src = http://localhost:8000/redirect/grafana/getAnonPanel<br>
             <b>Result: </b> Works!<br><br>
-            <u>Frame 3:</u> <i>img</i> src = http://localhost:8000/proxy/grafana/getAnonPanel<br>
-            <b>Result: </b> Broken<br><br>
-            <u>Frame 4:</u> <i>iframe</i> src = http://localhost:8000/redirect/grafana/getAnonPanel<br>
-            <b>Result: </b> Works!<br><br>
-            <u>Frame 5:</u> <i>iframe</i> src = http://localhost:8000/proxy/grafana/getAnonPanel/dashboard-solo/db/test-dashboard?orgId=1&panelId=2&width=500&height=500<br>
+            <u>Frame 3:</u> <i>iframe</i> src = http://localhost:8000/proxy/grafana/getAnonPanel/dashboard-solo/db/test-dashboard?orgId=1&panelId=2&width=500&height=500<br>
             <b>Result: </b> Works!<br><br>
         </p>
         <img id="grafana-img-1" src = "">
         <img id="grafana-img-2" src = "http://localhost:8000/redirect/grafana/getAnonPanel">
-        <iframe id="grafana-iframe-1" src = "http://localhost:8000/redirect/grafana/getAnonPanel"></iframe>
-        <iframe id = "grafana-iframe-2" src = "http://localhost:8000/proxy/grafana/getAnonPanel/dashboard-solo/db/test-dashboard?orgId=1&panelId=2&width=500&height=500"></iframe>
+        <iframe id = "grafana-iframe" src = "http://localhost:8000/proxy/grafana/getAnonPanel/dashboard-solo/db/test-dashboard?orgId=1&panelId=2&width=500&height=500"></iframe>
     </body>
 
 </html>
