@@ -6,44 +6,17 @@
         <meta charset="utf-8">
     </head>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script>
-        /*
-        $(window).load(function(){
-            console.log("Document: Window Loaded")
-            console.log("Ajax: Request To 'http://localhost:8000/grafana/getAuthPanel'...")
-            $.ajax({
-                type: 'GET',
-                url: 'http://localhost:8000/grafana/getAuthPanel',
-                success: function(data){
-                    console.log(`Ajax: Request To 'http://localhost:8000/grafana/getAuthPanel' Success...`)
-                    console.log("Ajax: Setting Src Attribute Of grafana-iframe-1...")
-                    // console.log(JSON.parse(data).body)
-                    $("#grafana-iframe-3").attr('src', `data:text/html;charset=utf-8,${JSON.parse(data).body}`)
-                },
-                error: function(err){
-                    console.log("Ajax: Grafana Request Through localhost:8000/grafana/getAuthPanel Failed...")
-                }
-            })
-        })
-        */
-    </script>
-
     <body>
-            <h1>Authenticated Panels</h1>
-            <p> <u>Note:</u> Grafana needs <i>anonynmous access</i> turned <b>off</b> for this page.<br><br>
+        <h1>Authenticated Panels</h1>
+        <p> <u>Note:</u> Grafana needs <i>anonynmous access</i> turned <b>off</b> for this page.<br><br>
                 
-        <div>
-             
-                <u>First frame:</u> Set <i>iframe</i> src = http://localhost:8000/proxy/grafana/getAuthPanel<br>
-                <b>Result:</b> <br><br>
-                <u>Second frame:</u> Set <i>iframe</i> src = http://localhost:8000/grafana/redirect/getAuthPanel<br>
-                <b>Result:</b> Shows Grafana Login<br><br>
+            <u>First frame:</u> Set <i>iframe</i> src = http://localhost:8000/proxy/grafana/getAuthPanel/dashboard-solo/db/test-dashboard?orgId=1&panelId=2&width=500&height=500<br>
+            <b>Result: Works</b> <br><br>
               
-            </p>
-            <iframe id = "grafana-iframe-1" src = "http://localhost:8000/proxy/grafana/getAuthPanel"></iframe>
-            <iframe id = "grafana-iframe-2" src = "http://localhost:8000/redirect/grafana/getAuthPanel"></iframe>
-            
+        </p>
+
+        <div>
+            <iframe id = "grafana-iframe-1" src = "http://localhost:8000/proxy/grafana/getAuthPanel/dashboard-solo/db/test-dashboard?orgId=1&panelId=2&width=500&height=500"></iframe>
         </div>
 
     </body>

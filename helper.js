@@ -7,7 +7,8 @@ module.exports = {
     grafanaAuthHost: getGrafanaAuthHost,
     grafanaAnonHost: getGrafanaAnonHost,
     grafanaHeaders: getGrafanaHeaders,
-    grafanaApiKey: getGrafanaApiKey
+    grafanaApiKey: getGrafanaApiKey,
+    queryString: getQueryString
 }
 
 // GRAFANA INFO
@@ -51,6 +52,10 @@ function constructAuthUrl(orgId, from, to, panelId, width, height){
   const query = `?orgId=${orgId}&panelId=${panelId}&width=${width}&height=${height}`
   return renderDashboard.concat(query)
 };
+
+function getQueryString(orgId, panelId, width, height){
+  return `?orgId=${orgId}&panelId=${panelId}&width=${width}&height=${height}`
+}
 
 function calculateTimeDelta(){
   const now = new Date();
