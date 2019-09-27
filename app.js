@@ -24,7 +24,8 @@ app.get('/redirect/grafana/getAnonPanel', function(req, res, next){
   // GRAFANA ANONYMOUS PROXY
  app.use('/proxy/grafana/getAnonPanel', proxy("http://localhost:8088/", {
     proxyReqPathResolver: function (req) {
-      helper.log(`Proxy Path: ${req.url}`)
+      helper.log(`Proxy Path: ${req.url}`, '/proxy/grafana/getAnonPanel/')
+      helper.log("Proxying To Grafana Server...", "/proxy/grafana/getAnonPanel/")
       return req.url;
     }
  }))
@@ -32,7 +33,7 @@ app.get('/redirect/grafana/getAnonPanel', function(req, res, next){
   // GRAFANA AUTHENTICATED PROXY
 app.use('/proxy/grafana/getAuthPanel', proxy("http://localhost:8080/", {
     proxyReqPathResolver: function (req) {
-      helper.log(`Proxy Path: ${req.url}`)
+      helper.log(`Proxy Path: ${req.url}`, '/proxy/grafana/getAuthPanel/')
       return req.url;
     },
       proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
