@@ -14,7 +14,7 @@ module.exports = {
 // GRAFANA INFO
 let grafanaAnonHost = 'http://localhost:8088'
 let grafanaAuthHost = 'http://localhost:8080'
-let grafanaApiKey =  "eyJrIjoiZkU1ekF3ckRtVHhKN0xNbWRGQnJJa3FuS005cUd2U3YiLCJuIjoidGVzdF9rZXkiLCJpZCI6MX0="
+let grafanaApiKey =  "eyJrIjoiOVNsWGwxWG1ZSktFN1FtcVJaeFVTczZ5YjBNdFBKNDMiLCJuIjoiZGZhcyIsImlkIjoxfQ=="
 let grafanaOptions = {
     getAnonSnapshotUrl:`${grafanaAnonHost}/api/snapshots`,
     postAnonSnapshotUrl:`${grafanaAnonHost}/api/snapshots/`,
