@@ -8,16 +8,22 @@ const proxy = require('express-http-proxy');
 
 // EXPRESS SETUP
 const app = express()
-app.use(bodyParser.urlencoded({extended : false}))
+app.use(bodyParser.json())
 // ENABLE CORS
 app.use(cors())
 
+app.use("/grafana/api/tsdb/query/", function(req, res, next){
+  console.log(req.body)
+  return next()
+})
   // GRAFANA AUTHENTICATED PROXY
-app.use('/grafana/', proxy("localhost:8080/grafana/", {
+app.use('/grafana/', proxy("localhost:8080/", {
   proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
     helper.log("Setting Proxy Headers...", "/grafana/")
     proxyReqOpts.headers['Authorization'] = `Bearer ${helper.grafanaApiKey()}`;
     proxyReqOpts.headers['Connection'] = 'keep-alive';
+    console.log(proxyReqOpts.body)
+    console.log(srcReq.body)
     return proxyReqOpts;
   },
   proxyReqPathResolver: function (req) {
