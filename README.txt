@@ -162,3 +162,5 @@ Embed Dashboard in Html With Iframe Element
 	<iframe id = "grafana-iframe-1" src = 	"http://localhost:8000/proxy/grafana/getAuthPanel/dashboard-solo/db/test-	dashboard?orgId=1&panelId=2&width=500&height=500"></iframe>
 
 Serve up the HTML document in the Node server and navigate to it in your browser. You should see the Grafana panel embedded in an iframe! Style as you desire and embed in a large application to take full advantage of the capabilities offered by Grafana!
+
+test.
