@@ -1,5 +1,3 @@
-USE IN CONJUNCTION WITH GRAFANA-AUTH-SERVER REPO
-
 *********************************************************************************
 Using Grafana In A Web Application
 *********************************************************************************
@@ -18,9 +16,18 @@ There is also a library of pre-made dashboard provided by the Grafana community 
 
 These dashboards can be configured to most data sources and embedded in your web application as you please. In general, Grafana has excellent documentation available at: 
 
-		https://grafana.com/docs/
+	https://grafana.com/docs/
 
 that will walk you through the whole setup and configuration process. However, if you want the bare minimum to get Grafana up and running and put to work in your application, this document will hopefully provide that. By the end, you should have a local Grafana server serving up a custom dashboard that will display in a simple html component you can embed in a larger web application.
+
+Note: The github for this frontend, 
+
+	https://github.ibm.com/grant-moore/grafana-demo 
+
+is to be used in conjunction with the backend repo at,
+
+	https://github.ibm.com/grant-moore/grafana-auth-server.git
+
 
 *********************************************************************************
 Grafana Setup
@@ -134,6 +141,7 @@ https://github.ibm.com/grant-moore
 
 	const app = express()
 	app.use(bodyParser.urlencoded({extended : false}))
+	app.use(bodyParse.json())
 	app.use(cors())
 
 18. Finally, set up proxy middleware and be sure to intercept the request before it goes out and append the Authorization header with the API key in Step 12.
